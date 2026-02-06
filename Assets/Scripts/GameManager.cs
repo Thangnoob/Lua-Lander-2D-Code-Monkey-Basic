@@ -35,7 +35,6 @@ public class GameManager : MonoBehaviour
     private void Lander_OnCoinPickup(object sender, System.EventArgs e)
     {
         AddScore(coinValue);
-        Debug.Log("Pickup: " + score);
     }
 
     private void AddScore(int amount)

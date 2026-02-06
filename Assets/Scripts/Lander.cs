@@ -16,7 +16,19 @@ public class Lander : MonoBehaviour
     public event EventHandler<OnLandedEventArgs> OnLanded;
     public class OnLandedEventArgs : EventArgs
     {
+        public LandingType landingType;
+        public float dotVector;
+        public float landingSpeed;
+        public float scoreMultiplier;
         public int score;
+    }
+
+    public enum LandingType
+    {
+        Success,
+        WrongLandingArea,
+        TooSteepAngle,
+        TooFastLanding,
     }
 
 
@@ -72,7 +84,14 @@ public class Lander : MonoBehaviour
     {
         if (!collision2d.gameObject.TryGetComponent(out LandingPad landingPad))
         {
-            Debug.Log("You Crashed on the Terrian!");
+            OnLanded?.Invoke(this, new OnLandedEventArgs
+            {
+                landingType = LandingType.WrongLandingArea,
+                dotVector = 0f,
+                landingSpeed = 0f,
+                scoreMultiplier = 0,
+                score = 0,
+            });
             return;
         }
 
@@ -80,7 +99,14 @@ public class Lander : MonoBehaviour
         float relativeVelocityMagnitude = collision2d.relativeVelocity.magnitude;
         if (relativeVelocityMagnitude > softLandingVelocityMagnitude)
         {
-            Debug.Log("You Crashed!");
+            OnLanded?.Invoke(this, new OnLandedEventArgs
+            {
+                landingType = LandingType.TooFastLanding,
+                dotVector = 0f,
+                landingSpeed = relativeVelocityMagnitude,
+                scoreMultiplier = landingPad.ScoreMultiplier,
+                score = 0,
+            });
             return;
         }
 
@@ -88,7 +114,14 @@ public class Lander : MonoBehaviour
         float minDotVectorForSafeLanding = .90f;
         if (dotVector < minDotVectorForSafeLanding)
         {
-            Debug.Log("Landed on a too angel!");
+            OnLanded?.Invoke(this, new OnLandedEventArgs
+            {
+                landingType = LandingType.TooSteepAngle,
+                dotVector = dotVector,
+                landingSpeed = relativeVelocityMagnitude,
+                scoreMultiplier = landingPad.ScoreMultiplier,
+                score = 0,
+            });
             return;
         }
 
@@ -102,13 +135,11 @@ public class Lander : MonoBehaviour
 
         int score = Mathf.RoundToInt((landingAngelScore + landingSpeedScore) * landingPad.ScoreMultiplier);
 
-        Debug.Log("Landing Score: " + (landingAngelScore + landingSpeedScore));
-        Debug.Log("Landing Angle Score: " + landingAngelScore);
-        Debug.Log("Landing Speed Score: " + landingSpeedScore);
-        Debug.Log("Landing Pad Multiplier: " + landingPad.ScoreMultiplier);
-        Debug.Log("Total Score: " + score);
-        Debug.Log("Successful Landing!");
         OnLanded?.Invoke(this, new OnLandedEventArgs{
+            landingType = LandingType.Success,
+            dotVector = dotVector,
+            landingSpeed = relativeVelocityMagnitude,   
+            scoreMultiplier = landingPad.ScoreMultiplier,
             score = score, 
         });
     }
