@@ -1,11 +1,21 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class LandedUI : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI titleTextMesh;
     [SerializeField] private TextMeshProUGUI statsTextMesh;
+    [SerializeField] private Button restartButton;
+
+    private void Awake()
+    {
+        restartButton.onClick.AddListener(() =>
+        {
+            SceneManager.LoadScene(0);
+        });
+    }
 
     private void Start()
     {
@@ -25,7 +35,7 @@ public class LandedUI : MonoBehaviour
 
         statsTextMesh.text = 
             Mathf.Round(e.landingSpeed * 2f) + "\n"+
-            Mathf.Round(e.dotVector + 100f) + "\n" +
+            Mathf.Round(e.dotVector * 100f) + "\n" +
             "x" + e.scoreMultiplier + "\n" +
             e.score;
         Show();

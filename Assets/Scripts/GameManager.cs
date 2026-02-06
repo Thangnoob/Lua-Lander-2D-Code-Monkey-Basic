@@ -4,29 +4,40 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
 
-    [SerializeField] private int score;
+    private int score;
     [SerializeField] private int coinValue = 500;
 
     private float time;
+    private bool isTimerActive;
 
-    private void Update()
+    private void Awake()
     {
-        time += Time.deltaTime;
+        Instance = this;
     }
 
     private void Start()
-    {
-        Instance = this;
-
+    {         
         Lander.Instance.OnCoinPickup += Lander_OnCoinPickup;
         Lander.Instance.OnLanded += Lander_OnLanded;
+        Lander.Instance.OnStateChanged += Lander_OnStateChanged;
     }
 
     private void OnDestroy()
     {
         Lander.Instance.OnCoinPickup -= Lander_OnCoinPickup;
-    }   
+    }
 
+    private void Update()
+    {
+        if (isTimerActive)
+        {
+            time += Time.deltaTime;
+        }
+    }
+    private void Lander_OnStateChanged(object sender, Lander.OnStateChangedEventArgs e)
+    {
+        isTimerActive = e.state == Lander.State.Normal;
+    }
     private void Lander_OnLanded(object sender, Lander.OnLandedEventArgs e)
     {
         AddScore(e.score);
