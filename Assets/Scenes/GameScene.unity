@@ -424,7 +424,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &353119447
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1040,6 +1040,7 @@ MonoBehaviour:
   gameLevels:
   - {fileID: 3192421960733429642, guid: 56ab89925b8cf8043a4aeb3afe6618b0, type: 3}
   - {fileID: 3691960632519062274, guid: 3543330b1d001664ba93bf66946b4133, type: 3}
+  cinemachineCamera: {fileID: 655858184}
   coinValue: 500
 --- !u!4 &628234190
 Transform:
