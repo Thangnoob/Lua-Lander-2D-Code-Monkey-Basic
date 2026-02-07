@@ -7,12 +7,8 @@ public class LanderVisuals : MonoBehaviour
     [SerializeField] private ParticleSystem rightThrusterParticleSystem;
     [SerializeField] private GameObject landerExploreVfx;
 
-    private Lander lander;
-
     private void Awake()
     {
-        lander = GetComponent<Lander>();
-        
         Lander.Instance.OnUpForce += Lander_OnUpForce;
         Lander.Instance.OnLeftForce += Lander_OnLeftForce;
         Lander.Instance.OnRightForce += Lander_OnRightForce;
@@ -25,7 +21,7 @@ public class LanderVisuals : MonoBehaviour
 
     private void Start()
     {
-        lander.OnLanded += Lander_OnLanded;
+        Lander.Instance.OnLanded += Lander_OnLanded;
     }
 
     private void OnDestroy()
