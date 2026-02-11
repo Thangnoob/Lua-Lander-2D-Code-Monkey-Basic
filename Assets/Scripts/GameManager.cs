@@ -141,12 +141,6 @@ public class GameManager : MonoBehaviour
 
         }
     }
-
-    private void CheckNextLevel()
-    {
-
-    }
-
     public void RetryLevel()
     {
         SceneLoader.LoadScene(SceneLoader.Scene.GameScene); 

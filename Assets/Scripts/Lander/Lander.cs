@@ -14,6 +14,7 @@ public class Lander : MonoBehaviour
     public event EventHandler OnRightForce;
     public event EventHandler OnBeforeForce;
     public event EventHandler OnCoinPickup;
+    public event EventHandler OnFuelPickup;
     public event EventHandler<OnStateChangedEventArgs> OnStateChanged;
     public class OnStateChangedEventArgs : EventArgs
     {
@@ -163,7 +164,6 @@ public class Lander : MonoBehaviour
             return;
         }
 
-        //CalculateTheScore();
         float maxScoreAmountLandingAngel = 100;
         float scoreDotVectorMultiplier = 10f;
         float landingAngelScore = maxScoreAmountLandingAngel - Mathf.Abs(dotVector - 1f) * scoreDotVectorMultiplier * maxScoreAmountLandingAngel;
@@ -188,6 +188,7 @@ public class Lander : MonoBehaviour
         if (collision2d.gameObject.TryGetComponent(out FuelPickup fuelPickup))
         {
             AddFuelAndNomalize();
+            OnFuelPickup?.Invoke(this, EventArgs.Empty);
             fuelPickup.DestroySelf();
         }
 
